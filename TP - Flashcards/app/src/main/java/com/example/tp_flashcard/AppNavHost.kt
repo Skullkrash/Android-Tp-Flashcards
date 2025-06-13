@@ -32,7 +32,8 @@ fun AppNavHost(homeViewModel: HomeViewModel, flashCardviewModel: FlashCardViewMo
             flashCardviewModel.loadQuestionsOfCategory(categoryId)
 
             FlashCardScreen(
-                viewModel = flashCardviewModel
+                viewModel = flashCardviewModel,
+                navController = navController
             )
         }
     }
