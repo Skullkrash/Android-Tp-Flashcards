@@ -2,9 +2,12 @@ package com.example.tp_flashcard.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,22 +29,28 @@ fun HomeScreen(
         CategoryList(
             onCategoryClick = onCategoryClick,
             categories = categories,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(horizontal = 24.dp, vertical = 16.dp)
         )
     }
 }
 
 @Composable
 fun CategoryList(
-        categories: List<FlashCardModels.FlashCardCategory>,
-        onCategoryClick: (FlashCardModels.FlashCardCategory) -> Unit,
-        modifier: Modifier = Modifier
+    categories: List<FlashCardModels.FlashCardCategory>,
+    onCategoryClick: (FlashCardModels.FlashCardCategory) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    androidx.compose.foundation.lazy.LazyColumn(modifier = modifier) {
+    androidx.compose.foundation.lazy.LazyColumn(
+        modifier = modifier
+    ) {
         items(categories.size) { index ->
             CategoryItem(
                 category = categories[index],
                 onCategoryClick = onCategoryClick,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
             )
         }
     }
@@ -53,13 +62,18 @@ fun CategoryItem(
     category: FlashCardModels.FlashCardCategory,
     onCategoryClick: (FlashCardModels.FlashCardCategory) -> Unit,
 ) {
-    Card {
-        androidx.compose.material3.Text(
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onCategoryClick(category) },
+        shape = MaterialTheme.shapes.medium,
+        elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Text(
             text = category.name,
-            modifier = modifier
-                .fillMaxSize()
-                .clickable { onCategoryClick(category) }
-                .padding(16.dp)
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(vertical = 24.dp, horizontal = 16.dp)
         )
     }
 }

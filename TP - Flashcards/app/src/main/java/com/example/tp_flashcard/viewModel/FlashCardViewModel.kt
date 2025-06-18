@@ -1,20 +1,20 @@
 package com.example.tp_flashcard.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.tp_flashcard.models.FlashCardModels.FlashCard
-import com.example.tp_flashcard.models.FlashCardModels.FlashCardCategory
 import com.example.tp_flashcard.models.FlashCardModels.FlashCardUiState
 import com.example.tp_flashcard.repository.FlashCardRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class FlashCardViewModel: ViewModel() {
-    private val _questions = kotlinx.coroutines.flow.MutableStateFlow<FlashCardUiState>(
+class FlashCardViewModel : ViewModel() {
+    private val _questions = MutableStateFlow(
         FlashCardUiState(
             cardIndex = 0,
             cardList = emptyList(),
             revisionFinished = false
         )
     )
-    val questions: kotlinx.coroutines.flow.StateFlow<FlashCardUiState> get() = _questions
+    val questions: StateFlow<FlashCardUiState> get() = _questions
 
     fun loadQuestionsOfCategory(categoryId: Int) {
         _questions.value = questions.value.copy(
