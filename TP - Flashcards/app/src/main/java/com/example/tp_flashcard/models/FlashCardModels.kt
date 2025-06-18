@@ -1,15 +1,20 @@
 package com.example.tp_flashcard.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 class FlashCardModels {
+    @Entity(tableName = "flashcards")
     data class FlashCard(
-        val id: Int = 0,
-        val categoryId : Int = 0,
+        @PrimaryKey(autoGenerate = true) val id: Int = 0,
+        val categoryId: Int = 0,
         val question: String = "",
         val answer: String = "",
     )
 
+    @Entity(tableName = "categories")
     data class FlashCardCategory(
-        val id: Int = 0,
+        @PrimaryKey(autoGenerate = true) val id: Int = 0,
         val name: String = "",
     )
 

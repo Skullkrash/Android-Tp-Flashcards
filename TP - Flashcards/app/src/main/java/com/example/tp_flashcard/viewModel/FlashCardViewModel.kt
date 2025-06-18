@@ -1,12 +1,15 @@
 package com.example.tp_flashcard.viewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tp_flashcard.models.FlashCardModels.FlashCardUiState
 import com.example.tp_flashcard.repository.FlashCardRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-class FlashCardViewModel : ViewModel() {
+class FlashCardViewModel(private val repository: FlashCardRepository) : ViewModel() {
     private val _questions = MutableStateFlow(
         FlashCardUiState(
             cardIndex = 0,
@@ -17,14 +20,15 @@ class FlashCardViewModel : ViewModel() {
     val questions: StateFlow<FlashCardUiState> get() = _questions
 
     fun loadQuestionsOfCategory(categoryId: Int) {
-        _questions.value = questions.value.copy(
-            cardList = FlashCardRepository.flashcards.filter { it.categoryId == categoryId },
-            cardIndex = 0,
-            revisionFinished = false
-        )
-        if (_questions.value.cardList.isEmpty()) {
-            throw IllegalArgumentException("No questions found for category ID: $categoryId")
-        }
+        repository.getFlashCardsByCategory(categoryId)
+            .onEach { list ->
+                _questions.value = questions.value.copy(
+                    cardList = list,
+                    cardIndex = 0,
+                    revisionFinished = false
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     fun nextQuestion(currentIndex: Int) {

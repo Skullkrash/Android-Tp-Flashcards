@@ -10,7 +10,10 @@ import com.example.tp_flashcard.viewModel.FlashCardViewModel
 import com.example.tp_flashcard.viewModel.HomeViewModel
 
 @Composable
-fun AppNavHost(homeViewModel: HomeViewModel, flashCardviewModel: FlashCardViewModel) {
+fun AppNavHost(
+    homeViewModel: HomeViewModel,
+    flashCardviewModel: FlashCardViewModel
+) {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "home") {
         composable("home") {
@@ -22,10 +25,8 @@ fun AppNavHost(homeViewModel: HomeViewModel, flashCardviewModel: FlashCardViewMo
             )
         }
         composable("study/{categoryId}") { backStackEntry ->
-            val categoryId = Integer.parseInt(backStackEntry.arguments?.getString("categoryId").toString())
-
+            val categoryId = backStackEntry.arguments?.getString("categoryId")?.toIntOrNull() ?: 0
             flashCardviewModel.loadQuestionsOfCategory(categoryId)
-
             FlashCardScreen(
                 viewModel = flashCardviewModel,
                 navController = navController

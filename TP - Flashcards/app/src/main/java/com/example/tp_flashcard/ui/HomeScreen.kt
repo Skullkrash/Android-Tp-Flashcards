@@ -1,9 +1,8 @@
 package com.example.tp_flashcard.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -12,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tp_flashcard.models.FlashCardModels
 import com.example.tp_flashcard.viewModel.HomeViewModel
@@ -22,17 +23,40 @@ fun HomeScreen(
     onCategoryClick: (FlashCardModels.FlashCardCategory) -> Unit,
 ) {
     val categories by homeViewModel.categories.collectAsState()
-
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
-        CategoryList(
-            onCategoryClick = onCategoryClick,
-            categories = categories,
+        Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = 24.dp, vertical = 16.dp)
-        )
+        ) {
+            Text(
+                text = "Flashcards App",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            )
+            Text(
+                text = "Practice and test your knowledge by category!",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            )
+            CategoryList(
+                onCategoryClick = onCategoryClick,
+                categories = categories,
+            )
+        }
     }
 }
 
@@ -42,7 +66,7 @@ fun CategoryList(
     onCategoryClick: (FlashCardModels.FlashCardCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    androidx.compose.foundation.lazy.LazyColumn(
+    LazyColumn(
         modifier = modifier
     ) {
         items(categories.size) { index ->
