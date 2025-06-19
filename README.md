@@ -7,5 +7,5 @@ It is an Android application in which a user can be made to learn different info
 
 ## Contributors
 
-Jeannot NAEGELY
-Yoann GRIM
+- Jeannot NAEGELY
+- Yoann GRIM
